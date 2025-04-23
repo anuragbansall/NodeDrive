@@ -1,10 +1,21 @@
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/User.model.js";
+import { validationResult, matchedData } from "express-validator";
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const error = new Error(errors.array()[0].msg || "Validation failed");
+      error.statusCode = 422;
+      error.validationErrors = errors.array();
+      throw error;
+    }
+
+    const data = matchedData(req);
+    const { name, email, password } = data;
 
     if (!name || !email || !password) {
       const error = new Error("All fields are required");
@@ -50,7 +61,18 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const error = new Error(errors.array()[0].msg || "Validation failed");
+      error.statusCode = 422;
+      error.validationErrors = errors.array();
+      throw error;
+    }
+
+    const data = matchedData(req);
+    console.log(data);
+    const { email, password } = data;
 
     if (!email || !password) {
       const error = new Error("All fields are required");
