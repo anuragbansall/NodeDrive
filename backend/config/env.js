@@ -4,4 +4,4 @@ dotenv.config({
   path: `.env.${process.env.NODE_ENV || "development"}`,
 });
 
-export const { PORT, MONGODB_URI } = process.env;
+export const { PORT, MONGODB_URI, JWT_SECRET } = process.env;
