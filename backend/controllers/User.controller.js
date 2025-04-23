@@ -7,7 +7,9 @@ export const register = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      throw error;
     }
 
     const existingUser = await User.findOne({ email });
@@ -37,6 +39,7 @@ export const register = async (req, res, next) => {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
+        password: password,
       },
       token,
     });
@@ -50,7 +53,9 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      throw error;
     }
 
     const user = await User.findOne({ email });
@@ -78,6 +83,7 @@ export const login = async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        password: password,
       },
       token,
     });
