@@ -5,7 +5,7 @@ export default function generateToken(user, res) {
   const token = jwt.sign(
     {
       id: user._id,
-      username: user.username,
+      name: user.name,
       email: user.email,
     },
     JWT_SECRET,
