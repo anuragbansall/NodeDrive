@@ -1,6 +1,7 @@
 import express from "express";
 import { login, logout, register } from "../controllers/User.controller.js";
 import { body } from "express-validator";
+import authorize from "../middlewares/auth.middleware.js";
 
 const userRouter = express.Router();
 
