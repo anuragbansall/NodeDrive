@@ -4,6 +4,7 @@ import { PORT } from "./config/env.js";
 import connectDB from "./db/connectDB.js";
 import userRouter from "./routes/User.routes.js";
 import cookieParser from "cookie-parser";
+import uploadRouter from "./routes/Upload.routes.js";
 
 const app = express();
 
@@ -21,6 +22,9 @@ app.get("/api/v1", (req, res) => {
 
 // User routes
 app.use("/api/v1/user", userRouter);
+
+// File upload routes
+app.use("/api/v1/upload", uploadRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
