@@ -4,27 +4,21 @@ export const uploadFile = async (req, res, next) => {
     const user = req.user;
 
     if (!file) {
-      const error = new Error("Please upload a file");
-      error.status = 400;
-      throw error;
+      return res.status(400).json({ message: "No file uploaded" });
     }
-
-    // Todo: Upload file to firebase storage
 
     res.status(200).json({
       message: "File uploaded successfully",
       file: {
+        id: file.filename,
         name: file.originalname,
         size: file.size,
         type: file.mimetype,
-        buffer: file.buffer.toString("base64"),
-      },
-      user: {
-        id: user.id,
-        name: user.name,
+        publicUrl: file.path,
+        user: user.id,
       },
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
