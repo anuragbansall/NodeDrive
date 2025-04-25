@@ -71,7 +71,6 @@ export const login = async (req, res, next) => {
     }
 
     const data = matchedData(req);
-    console.log(data);
     const { email, password } = data;
 
     if (!email || !password) {

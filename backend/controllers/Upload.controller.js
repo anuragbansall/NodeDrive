@@ -37,4 +37,27 @@ export const uploadFile = async (req, res, next) => {
     next(err);
   }
 };
-  
+
+export const getFiles = async (req, res, next) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const files = await File.find({ user: user._id }).populate(
+      "user",
+      "name email"
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: files,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
