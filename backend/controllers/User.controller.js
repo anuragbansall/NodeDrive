@@ -24,14 +24,14 @@ export const register = async (req, res, next) => {
       throw error;
     }
 
-    const existingUser = await User.findOne({ email });
-
     const decision = await aj.protect(req, {
       requested: 1,
       email: email,
       ua: req.headers["user-agent"] || "Unknown-UA",
       ip: req.ip,
     });
+
+    const existingUser = await User.findOne({ email });
 
     if (decision.isDenied()) {
       const error = new Error("Email validation failed");
