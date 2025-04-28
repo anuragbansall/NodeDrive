@@ -5,6 +5,7 @@ import connectDB from "./db/connectDB.js";
 import userRouter from "./routes/User.routes.js";
 import cookieParser from "cookie-parser";
 import uploadRouter from "./routes/Upload.routes.js";
+import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(arcjetMiddleware); // Arcjet middleware for request protection
 
 app.get("/api/v1", (req, res) => {
   res.status(200).json({

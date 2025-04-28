@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/User.model.js";
 import { validationResult, matchedData } from "express-validator";
+import aj from "../config/arcjet.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -24,6 +25,19 @@ export const register = async (req, res, next) => {
     }
 
     const existingUser = await User.findOne({ email });
+
+    const decision = await aj.protect(req, {
+      requested: 1,
+      email: email,
+      ua: req.headers["user-agent"] || "Unknown-UA",
+      ip: req.ip,
+    });
+
+    if (decision.isDenied()) {
+      const error = new Error("Email validation failed");
+      error.status = 403; // Forbidden
+      throw error;
+    }
 
     if (existingUser) {
       const error = new Error("User already exists");
