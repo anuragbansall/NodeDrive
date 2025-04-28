@@ -31,13 +31,13 @@ export const register = async (req, res, next) => {
       ip: req.ip,
     });
 
-    const existingUser = await User.findOne({ email });
-
     if (decision.isDenied()) {
       const error = new Error("Email validation failed");
       error.status = 403; // Forbidden
       throw error;
     }
+
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       const error = new Error("User already exists");
